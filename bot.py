@@ -1,5 +1,22 @@
+import random
 import datetime
 
-print("YT automation test run:", datetime.datetime.now())
+print("Shorts automation run:", datetime.datetime.now())
 
-# yahan future me tum script + video + upload logic add karoge
+# demo shorts title generator
+titles = [
+    "Amazing Fact in 30 Seconds 🤯",
+    "You Won’t Believe This 😱",
+    "Top Secret Trick Revealed 🔥",
+    "Mind Blowing Reality 🌍",
+]
+
+title = random.choice(titles)
+
+print("Generated Shorts Title:", title)
+
+# future me yahan:
+# script AI
+# voice generate
+# video create
+# youtube upload
