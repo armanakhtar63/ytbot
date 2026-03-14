@@ -1,22 +1,58 @@
+import os
 import random
 import datetime
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload
+from google.oauth2.service_account import Credentials
 
-print("Shorts automation run:", datetime.datetime.now())
+print("Shorts Upload Run:", datetime.datetime.now())
 
-# demo shorts title generator
+# ===== SETTINGS =====
+VIDEO_FILE = "short.mp4"   # repo me ek vertical shorts video upload kar dena
+SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
+
+SERVICE_FILE = "service.json"   # youtube api service account json
+
 titles = [
     "Amazing Fact in 30 Seconds 🤯",
-    "You Won’t Believe This 😱",
-    "Top Secret Trick Revealed 🔥",
-    "Mind Blowing Reality 🌍",
+    "Unbelievable Truth 😱",
+    "Quick Knowledge Shot ⚡",
+    "Viral Reality Check 🔥"
+]
+
+descriptions = [
+    "Subscribe for daily shorts 🚀",
+    "More facts coming daily 💡",
+    "Stay tuned for next video ⭐"
 ]
 
 title = random.choice(titles)
+description = random.choice(descriptions)
 
-print("Generated Shorts Title:", title)
+# ===== AUTH =====
+creds = Credentials.from_service_account_file(
+    SERVICE_FILE, scopes=SCOPES
+)
 
-# future me yahan:
-# script AI
-# voice generate
-# video create
-# youtube upload
+youtube = build("youtube", "v3", credentials=creds)
+
+# ===== UPLOAD =====
+request = youtube.videos().insert(
+    part="snippet,status",
+    body={
+        "snippet": {
+            "title": title,
+            "description": description,
+            "tags": ["shorts","facts","viral"],
+            "categoryId": "22"
+        },
+        "status": {
+            "privacyStatus": "public"
+        }
+    },
+    media_body=MediaFileUpload(VIDEO_FILE)
+)
+
+response = request.execute()
+
+print("UPLOAD SUCCESS VIDEO ID:", response["id"])
