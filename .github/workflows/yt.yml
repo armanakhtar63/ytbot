@@ -1,0 +1,17 @@
+name: ytbot
+
+on:
+  schedule:
+    - cron: "0 9 * * *"
+    - cron: "0 14 * * *"
+    - cron: "0 20 * * *"
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: install python
+        run: pip install moviepy google-api-python-client requests
+      - name: run bot
+        run: python bot.py
